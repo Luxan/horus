@@ -19,12 +19,13 @@ public class Main {
   public static void main(String[] args) {
     MyStructure myStructure = new MyStructure();
     myStructure.addNode(rootNode);
-    rootNode.addNode(ANode);
-    rootNode.addNode(BNode);
-    ANode.addNode(AANode);
-    ANode.addNode(ABNode);
-    BNode.addNode(BANode);
-    BNode.addNode(BBNode);
+
+    rootNode.addChildNode(ANode);
+    rootNode.addChildNode(BNode);
+    ANode.addChildNode(AANode);
+    ANode.addChildNode(ABNode);
+    BNode.addChildNode(BANode);
+    BNode.addChildNode(BBNode);
 
     nodeList.forEach(node -> assertEquals(myStructure.findByCode(node.getCode()), node));
     nodeList.forEach(node -> assertEquals(myStructure.findByRenderer(node.getRenderer()), node));

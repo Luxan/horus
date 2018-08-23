@@ -1,10 +1,13 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MyStructure extends NodeCollection implements IMyStructure {
+public class MyStructure implements IMyStructure {
+
+  private List<INode> nodes = new ArrayList<>();
 
   @Override
   public INode findByCode(String code) {
@@ -42,6 +45,10 @@ public class MyStructure extends NodeCollection implements IMyStructure {
         .map(obj -> (ICompositeNode) obj)
         .flatMap(MyStructure::getChildNodes)
     );
+  }
+
+  void addNode(INode node) {
+    nodes.add(node);
   }
 
 }

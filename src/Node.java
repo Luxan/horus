@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 import java.util.List;
 
-public class Node extends NodeCollection implements ICompositeNode {
+public class Node implements ICompositeNode {
 
   private String code;
   private String renderer;
+  private List<INode> children = new ArrayList<>();
 
   Node(String code, String renderer) {
     this.code = code;
@@ -22,7 +24,12 @@ public class Node extends NodeCollection implements ICompositeNode {
 
   @Override
   public List<INode> getNodes() {
-    return nodes;
+    return children;
+  }
+
+  @Override
+  public void addChildNode(INode node) {
+    children.add(node);
   }
 
 }
