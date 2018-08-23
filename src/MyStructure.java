@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -16,7 +17,7 @@ public class MyStructure extends NodeCollection implements IMyStructure {
   }
 
   private INode getNodeByPredicate(Predicate<INode> iNodePredicate) {
-    Optional<INode> any = getAllChildrenNodes()
+    Optional<INode> any = getAllNodes().stream()
       .filter(iNodePredicate)
       .findAny();
     return any.orElse(null);
@@ -24,15 +25,23 @@ public class MyStructure extends NodeCollection implements IMyStructure {
 
   @Override
   public int count() {
-    return getAllChildrenNodes()
-      .collect(Collectors.toList())
-      .size();
+    return getAllNodes().size();
   }
 
-  private Stream<INode> getAllChildrenNodes() {
+  private List<INode> getAllNodes() {
     return nodes.stream()
       .map(obj -> (ICompositeNode) obj)
-      .flatMap(node -> node.getNodes().stream());
+      .flatMap(MyStructure::getChildNodes)
+      .collect(Collectors.toList());
+  }
+
+  private static Stream<INode> getChildNodes(ICompositeNode node) {
+    return Stream.concat(
+      Stream.of(node),
+      node.getNodes().stream()
+        .map(obj -> (ICompositeNode) obj)
+        .flatMap(MyStructure::getChildNodes)
+    );
   }
 
 }

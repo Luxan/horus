@@ -1,6 +1,4 @@
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Node extends NodeCollection implements ICompositeNode {
 
@@ -24,12 +22,7 @@ public class Node extends NodeCollection implements ICompositeNode {
 
   @Override
   public List<INode> getNodes() {
-    return Stream.concat(
-      Stream.of(this),
-      nodes.stream()
-        .map(obj -> (ICompositeNode) obj)
-        .flatMap(node-> node.getNodes().stream())
-    ).collect(Collectors.toList());
+    return nodes;
   }
 
 }
