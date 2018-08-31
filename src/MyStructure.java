@@ -2,12 +2,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MyStructure implements IMyStructure {
 
   private List<INode> nodes = new ArrayList<>();
+
+  private MyIterator iterator() {
+    return new MyIterator(nodes);
+  }
 
   @Override
   public INode findByCode(String code) {
@@ -32,19 +34,9 @@ public class MyStructure implements IMyStructure {
   }
 
   private List<INode> getAllNodes() {
-    return nodes.stream()
-      .map(obj -> (ICompositeNode) obj)
-      .flatMap(MyStructure::getChildNodes)
-      .collect(Collectors.toList());
-  }
-
-  private static Stream<INode> getChildNodes(ICompositeNode node) {
-    return Stream.concat(
-      Stream.of(node),
-      node.getNodes().stream()
-        .map(obj -> (ICompositeNode) obj)
-        .flatMap(MyStructure::getChildNodes)
-    );
+    List<INode> list = new ArrayList<>();
+    iterator().forEachRemaining(list::add);
+    return list;
   }
 
   void addNode(INode node) {
